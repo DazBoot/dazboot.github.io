@@ -51,7 +51,7 @@ ApplicationMain.init = function() {
 	if(total == 0) ApplicationMain.start();
 };
 ApplicationMain.main = function() {
-	ApplicationMain.config = { build : "61", company : "Josh Elliott", file : "ProjectClick", fps : 60, name : "ProjectClick", orientation : "", packageName : "game.ProjectClick", version : "1.0.0", windows : [{ antialiasing : 0, background : 16777215, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : false, stencilBuffer : true, title : "ProjectClick", vsync : false, width : 800, x : null, y : null}]};
+	ApplicationMain.config = { build : "72", company : "Josh Elliott", file : "ProjectClick", fps : 60, name : "ProjectClick", orientation : "", packageName : "game.ProjectClick", version : "1.0.0", windows : [{ antialiasing : 0, background : 16777215, borderless : false, depthBuffer : false, display : 0, fullscreen : false, hardware : false, height : 600, parameters : "{}", resizable : false, stencilBuffer : true, title : "ProjectClick", vsync : false, width : 800, x : null, y : null}]};
 };
 ApplicationMain.start = function() {
 	var hasMain = false;
@@ -2160,12 +2160,15 @@ game_HUD.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.m_pointsDisplay.set_width(openfl_Lib.current.stage.stageWidth);
 		this.m_pointsDisplay.set_height(openfl_Lib.current.stage.stageHeight);
 		this.addChild(this.m_pointsDisplay);
+		this.m_debugPointsDisplay = new openfl_text_TextField();
+		this.addChild(this.m_debugPointsDisplay);
 		game_profile_PlayerProfile.curProfile.addEventListener("PROFILE_UPDATE",$bind(this,this.onProfileUpdate));
 	}
 	,onProfileUpdate: function(e) {
 		this.updatePointsCounter();
 	}
 	,updatePointsCounter: function() {
+		this.m_debugPointsDisplay.set_text(Std.string(game_profile_PlayerProfile.curProfile.points));
 		this.m_pointsDisplay.set_text(Std.string(game_profile_PlayerProfile.curProfile.points | 0));
 		this.m_pointsDisplay.set_x((this.stage.stageWidth - this.m_pointsDisplay.get_textWidth()) / 2);
 		this.m_pointsDisplay.set_y((this.stage.stageHeight - this.m_pointsDisplay.get_textHeight()) / 2);
@@ -2182,8 +2185,10 @@ game_profile_PlayerProfile.curProfile = null;
 game_profile_PlayerProfile.__super__ = openfl_events_EventDispatcher;
 game_profile_PlayerProfile.prototype = $extend(openfl_events_EventDispatcher.prototype,{
 	init: function() {
+		this.m_createDate = new Date().getTime();
+		this.m_lastUpdate = this.m_createDate;
 		this.points = 0;
-		this.incomeRate = 1 / openfl_Lib.current.stage.get_frameRate();
+		this.incomeRate = 1;
 		openfl_Lib.current.stage.addEventListener("enterFrame",$bind(this,this.onEnterFrame));
 	}
 	,addPoints: function(numPoints) {
@@ -2194,7 +2199,10 @@ game_profile_PlayerProfile.prototype = $extend(openfl_events_EventDispatcher.pro
 	}
 	,update: function(iterations) {
 		if(iterations == null) iterations = 1;
-		this.addPoints(this.incomeRate);
+		var now = new Date().getTime();
+		var timeSinceLastUpdate = (now - this.m_lastUpdate) / 1000;
+		this.addPoints(this.incomeRate * timeSinceLastUpdate);
+		this.m_lastUpdate = now;
 		this.dispatchEvent(new game_profile_ProfileEvent("PROFILE_UPDATE"));
 	}
 	,__class__: game_profile_PlayerProfile

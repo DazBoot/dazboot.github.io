@@ -1,0 +1,35 @@
+#focusContent {
+	width:10px;
+	height:10px;
+	background-color: #474747;
+}
+
+#contentButtons {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+}
+
+.contentButton {
+	display: inline-block;
+	width:40px;
+	height:40px;
+	border-style: solid;
+	border-color: #000000;
+}
+
+#blueButton {
+	background-color: #00BFFF;
+}
+
+#greenButton {
+	background-color: #3FFF00;
+}
+
+#yellowButton {
+	background-color: #FFFF00;
+}
+
+#redButton {
+	background-color: #FF0000;
+}

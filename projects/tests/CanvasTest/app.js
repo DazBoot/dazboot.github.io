@@ -1,7 +1,7 @@
 function onLoad( )
 {
-	maxWidth = 720;
-	maxHeight = 400;
+	maxWidth = 1440;
+	maxHeight = 900;
 
 	console.log( "PAGE LOADED!" );
 	updateContentDivSize();

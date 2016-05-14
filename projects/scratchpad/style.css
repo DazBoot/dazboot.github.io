@@ -1,0 +1,15 @@
+.body {
+	background-color: #F2F2F2;
+}
+
+#content {
+	margin: 0 auto;
+	width: 960px;
+	padding: 20px;
+	font-family: 'Coming Soon', cursive;
+	background-color: #F2F2F2;
+}
+
+#content-title {
+	font-size: 36px;
+}
